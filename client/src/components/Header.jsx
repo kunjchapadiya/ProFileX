@@ -30,7 +30,7 @@ const Header = () => {
   ];
 
   return (
-    <header className="sticky top-0 w-full bg-white/95 backdrop-blur-md border-b border-gray-100 px-6 md:px-12 py-4 z-50 shadow-sm transition-all duration-300">
+    <header className="sticky top-0 w-full bg-white/95 backdrop-blur-md border-b border-gray-100 px-6 md:px-12 py-4 z-50 shadow-sm transition-all duration-300 print:hidden">
       <div className="flex justify-between items-center max-w-7xl mx-auto">
         <div
           onClick={() => navigate('/')}
@@ -57,8 +57,8 @@ const Header = () => {
           <button
             onClick={handleAuthClick}
             className={`px-5 py-2 rounded-full font-medium transition duration-300 ${user
-                ? 'bg-red-50 text-red-500 hover:bg-red-100 border border-red-200'
-                : 'bg-[#2DC08D] text-white hover:bg-[#25a075] shadow-md hover:shadow-lg'
+              ? 'bg-red-50 text-red-500 hover:bg-red-100 border border-red-200'
+              : 'bg-[#2DC08D] text-white hover:bg-[#25a075] shadow-md hover:shadow-lg'
               }`}
           >
             {user ? 'Logout' : 'Get Started'}
@@ -93,8 +93,8 @@ const Header = () => {
           <button
             onClick={handleAuthClick}
             className={`w-full text-center px-5 py-2 rounded-lg font-medium transition duration-300 ${user
-                ? 'bg-red-50 text-red-500 hover:bg-red-100 border border-red-200'
-                : 'bg-[#2DC08D] text-white hover:bg-[#25a075] shadow-md'
+              ? 'bg-red-50 text-red-500 hover:bg-red-100 border border-red-200'
+              : 'bg-[#2DC08D] text-white hover:bg-[#25a075] shadow-md'
               }`}
           >
             {user ? 'Logout' : 'Get Started'}

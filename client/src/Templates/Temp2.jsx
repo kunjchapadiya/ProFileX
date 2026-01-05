@@ -37,7 +37,7 @@ const Temp2 = () => {
     const { personal, skills, experience, education, projects, certifications, languages, summary, social } = profile;
 
     return (
-        <div className="max-w-[800px] mx-auto my-10 p-12 bg-white text-gray-800 font-serif border-t-8 border-blue-900 shadow-lg">
+        <div className="max-w-[800px] mx-auto my-10 p-12 bg-white text-gray-800 font-serif border-t-8 border-blue-900 shadow-lg print:shadow-none print:m-0 print:border-none print:w-full print:max-w-none">
             <div className="text-center border-b-2 border-gray-200 pb-6 mb-6">
                 <h1 className="text-3xl font-bold uppercase tracking-widest text-blue-900">{personal.fullName}</h1>
                 <p className="mt-2 text-sm">{personal.city} • {personal.contactNo} • {personal.email}</p>
@@ -54,8 +54,8 @@ const Temp2 = () => {
                 </div>
             )}
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div className="col-span-2">
+            <div className="grid grid-cols-1 md:grid-cols-3 print:grid-cols-3 gap-8">
+                <div className="col-span-2 print:col-span-2">
                     {experience.length > 0 && (
                         <section className="mb-6">
                             <h3 className="text-lg font-bold text-blue-900 uppercase tracking-wide border-b border-blue-900 mb-3">Professional Experience</h3>
@@ -86,7 +86,7 @@ const Temp2 = () => {
                     )}
                 </div>
 
-                <div className="col-span-1 bg-gray-50 p-4 rounded">
+                <div className="col-span-1 print:col-span-1 bg-gray-50 print:bg-gray-50 p-4 rounded print-color-adjust-exact">
                     {education.length > 0 && (
                         <section className="mb-6">
                             <h3 className="text-lg font-bold text-blue-900 uppercase tracking-wide border-b border-blue-900 mb-3">Education</h3>
@@ -105,7 +105,7 @@ const Temp2 = () => {
                             <h3 className="text-lg font-bold text-blue-900 uppercase tracking-wide border-b border-blue-900 mb-3">Skills</h3>
                             <div className="flex flex-wrap gap-2">
                                 {skills.map((skill, i) => (
-                                    <span key={i} className="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded">{skill}</span>
+                                    <span key={i} className="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded print:bg-blue-100 print:text-blue-800">{skill}</span>
                                 ))}
                             </div>
                         </section>

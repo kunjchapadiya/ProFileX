@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import useResumeData from '../hooks/useResumeData';
 import Temp1 from '../Templates/Temp1';
 import Temp2 from '../Templates/Temp2';
 import Temp3 from '../Templates/Temp3';
@@ -10,6 +11,7 @@ import Temp6 from '../Templates/Temp6';
 const ViewResume = () => {
     const navigate = useNavigate();
     const [selectedTemplate] = useState(localStorage.getItem('selectedTemplate') || 'temp1');
+    const { resumeData, loading } = useResumeData();
 
     const renderTemplate = () => {
         switch (selectedTemplate) {
@@ -18,9 +20,13 @@ const ViewResume = () => {
             case 'temp4': return <Temp4 />;
             case 'temp5': return <Temp5 />;
             case 'temp6': return <Temp6 />;
-            default: return <Temp1 />;
+            default: return <Temp1 data={resumeData} />;
         }
     };
+
+    if (loading) {
+        return <div className="text-center mt-10">Loading...</div>;
+    }
 
     return (
         <div className="min-h-screen bg-gray-100 py-8">
@@ -28,12 +34,7 @@ const ViewResume = () => {
                 <div className="flex justify-between items-center mb-6 no-print">
                     <h1 className="text-3xl font-bold text-gray-900">Your Resume</h1>
                     <div className="flex gap-4">
-                        <button
-                            onClick={() => navigate('/template-selection')}
-                            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded shadow transition"
-                        >
-                            Change Template
-                        </button>
+                        {/* Download PDF Button (specific for Temp1 for now) */}
                         <button
                             onClick={() => window.print()}
                             className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded shadow transition"
@@ -57,6 +58,13 @@ const ViewResume = () => {
                     .no-print { display: none !important; }
                     body { background: white; }
                     .print\\:shadow-none { box-shadow: none !important; }
+                    @page { margin: 0; }
+                    
+                    /* Ensure background colors are printed */
+                    * {
+                        -webkit-print-color-adjust: exact !important;
+                        print-color-adjust: exact !important;
+                    }
                 }
             `}</style>
         </div>

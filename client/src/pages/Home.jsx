@@ -1,9 +1,18 @@
 import React from 'react';
 import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 import { useNavigate } from 'react-router-dom';
-
+import { useAuth } from '../context/AuthContext';
 const Home = () => {
   const navigate = useNavigate();
+  const { user } = useAuth();
+  const onCreateResume = () => {
+    if (!user) {
+      navigate('/login');
+    }
+    else {
+      navigate('/template-selection');
+    }
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 text-gray-800 font-sans">

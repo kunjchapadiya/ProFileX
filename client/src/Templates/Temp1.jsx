@@ -4,31 +4,39 @@ import { doc, getDoc } from "firebase/firestore";
 import { db } from "../../firebase/firebase";
 import { useAuth } from "../context/AuthContext";
 
-const ResumeTemplate = () => {
-  const { user, loading } = useAuth();
+const defaults = {
+  personal: {
+    fullName: "",
+    email: "",
+    contactNo: "",
+    city: "",
+  },
+  summary: "",
+  skills: [],
+  experience: [],
+  education: [],
+  projects: [],
+  certifications: [],
+  languages: [],
+  social: {},
+};
 
-  const defaults = {
-    personal: {
-      fullName: "",
-      email: "",
-      contactNo: "",
-      city: "",
-    },
-    summary: "",
-    skills: [],
-    experience: [],
-    education: [],
-    projects: [],
-    certifications: [],
-    languages: [],
-    social: {},
-  };
+const ResumeTemplate = ({ data }) => {
+  const { user, loading: authLoading } = useAuth();
 
-  const [profile, setProfile] = useState(defaults);
+  const [internalProfile, setProfile] = useState(defaults);
   const [fetching, setFetching] = useState(true);
 
+  // If data is provided via props, use it. Otherwise fetch.
+  const profile = data || internalProfile;
+
   useEffect(() => {
-    if (!user) return;
+    if (data) {
+      setFetching(false);
+      return;
+    }
+
+    if (!user || authLoading) return;
 
     const fetchUserData = async () => {
       try {
@@ -44,9 +52,9 @@ const ResumeTemplate = () => {
     };
 
     fetchUserData();
-  }, [user]);
+  }, [user, authLoading, data]);
 
-  if (loading || fetching) {
+  if ((authLoading || fetching) && !data) {
     return <p className="text-center mt-10">Loading resume...</p>;
   }
 
@@ -63,7 +71,7 @@ const ResumeTemplate = () => {
   } = profile;
 
   return (
-    <div className="max-w-[800px] mx-auto my-10 p-10 bg-white text-gray-900 font-sans shadow-xl">
+    <div className="max-w-[800px] mx-auto my-5 p-10 bg-white text-gray-900 font-sans shadow-xl">
 
       {/* HEADER */}
       <header className="border-b-2 border-gray-300 pb-4 mb-6">
@@ -106,13 +114,20 @@ const ResumeTemplate = () => {
           </h2>
           {experience.map((exp, i) => (
             <div key={i} className="mb-4">
-              <p className="font-semibold">
-                {exp.role} – {exp.company}
-              </p>
-              <p className="text-sm">
-                {exp.from} – {exp.to}
-              </p>
-              <p className="mt-1">{exp.description}</p>
+              <div className="sec flex justify-between">
+
+                <p className="font-semibold text-lg">
+                  {exp.role} – {exp.company}
+                </p>
+                <p className="text-sm">
+                  {exp.from} – {exp.to}
+                </p>
+              </div>
+              <ul>
+
+                <li
+                  className="mt-1">{exp.description}</li>
+              </ul>
             </div>
           ))}
         </section>
@@ -130,7 +145,7 @@ const ResumeTemplate = () => {
                 <p className="font-semibold">{proj.title || proj.role}</p>
                 {proj.link && <a href={proj.link} target="_blank" rel="noopener noreferrer" className="text-xs text-blue-600 underline">Link</a>}
               </div>
-              <p className="text-sm font-medium text-gray-700">{proj.techStack}</p>
+              <p className="text-sm font-medium text-gray-700">Tools: {proj.techStack}</p>
               <p className="text-sm">{proj.description}</p>
             </div>
           ))}
@@ -145,13 +160,17 @@ const ResumeTemplate = () => {
           </h2>
           {education.map((edu, i) => (
             <div key={i} className="mb-2">
-              <p className="font-semibold">{edu.course || edu.degree}</p>
+              <div className="sec flex justify-between">
+
+                <p className="font-semibold">{edu.course || edu.degree}</p>
+                <p className="text-sm text-gray-600">
+                  {edu.passedOutMonth ? `Graduated: ${edu.passedOutMonth}` : `${edu.from} - ${edu.to}`}
+                </p>
+              </div>
               <p className="text-sm">
                 {edu.institution}, {edu.city}
               </p>
-              <p className="text-xs text-gray-600">
-                {edu.passedOutMonth ? `Graduated: ${edu.passedOutMonth}` : `${edu.from} - ${edu.to}`}
-              </p>
+
             </div>
           ))}
         </section>
